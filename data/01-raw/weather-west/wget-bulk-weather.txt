@@ -1,0 +1,3 @@
+for year in `seq 1994 2014`;do for month in `seq 1 12`;do wget --content-disposition "http://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=4716&Year=${year}&Month=${month}&Day=14&timeframe=1&submit= Download+Data" ;done;done
+for year in `seq 2014 2018`;do for month in `seq 1 12`;do wget --content-disposition "http://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=52838&Year=${year}&Month=${month}&Day=14&timeframe=1&submit= Download+Data" ;done;done
+for year in `seq 2018 2019`;do for month in `seq 1 12`;do wget --content-disposition "http://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=54738&Year=${year}&Month=${month}&Day=14&timeframe=1&submit= Download+Data" ;done;done
