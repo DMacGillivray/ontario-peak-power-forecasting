@@ -19,7 +19,7 @@
 16. [Test Data Results](#16-test-data-results)
 17. [Next Steps](#17-next-steps)
 18. [Conclusion](#18-conclusion)
-19. [Appendix: Tips for Reproducing This Project](#19-appendix-tips-for-reproducing this project)
+19. [Appendix - Tips for Reproducing This Project](#19-appendix-tips-for-reproducing this project)
 <br/><br/>
 
 ## 1. Business Proposal
@@ -738,10 +738,11 @@ This knowledge can help inform how much we will compensate the customer for inco
 +  Is there a better rolling window span for the cross validation? Probably, and with more searching it could be found.
 + Model Tuning - A small amount of tuning was done, but not exhaustively. This is certainly a good opportunity to improve model performance.
 + Feature Engineering - Because the scope changed during the project, analysis of features was a bit lacking on the reduced data set
-+ All the above are relatively minor tweaks to the original project. These would be interesting, but from what I can tell, the [Monash Electricity Forecasting Model](https://robjhyndman.com/papers/MEFMR1.pdf) is the state of the (publicly available) art. (presentation [here](https://www.slideshare.net/hyndman/challenges-in-forecasting-peak-electricity-demand)) If I were to develop a follow on model - I would try to reproduce this for the Ontario market. 
++ All the above are relatively minor tweaks to the original project. These would be interesting, but from what I can tell, the [Monash Electricity Forecasting Model](https://robjhyndman.com/papers/MEFMR1.pdf) is the state of the (publicly available) art. (presentation [here](https://www.slideshare.net/hyndman/challenges-in-forecasting-peak-electricity-demand)) If I were to develop a follow on model - I would try to reproduce this for the Ontario market.
+
 <br/><br/>
 
-## 18 Conclusion
+## 18. Conclusion
 
 The intent of this project was to answer the question:
 
@@ -753,7 +754,7 @@ It seems like the financials could be viable. A more appropriate model would be 
 
 <br/><br/>
 
-## 19 Appendix: Tips for Reproducing This Project
+## 19. Appendix - Tips for Reproducing This Project
 
 
 ### 19.1 Software
