@@ -19,7 +19,7 @@
 16. [Test Data Results](#16-test-data-results)
 17. [Next Steps](#17-next-steps)
 18. [Conclusion](#18-conclusion)
-19. [Appendix - Tips for Reproducing This Project](#19-appendix-tips-for-reproducing this project)
+19. [Tips for Reproducing This Project](#19-tips-for-reproducing-this-project)
 <br/><br/>
 
 ## 1. Business Proposal
@@ -754,7 +754,8 @@ It seems like the financials could be viable. A more appropriate model would be 
 
 <br/><br/>
 
-## 19. Appendix - Tips for Reproducing This Project
+
+## 19. Tips for Reproducing This Project
 
 
 ### 19.1 Software
