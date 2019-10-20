@@ -19,6 +19,7 @@
 16. [Test Data Results](#16-test-data-results)
 17. [Next Steps](#17-next-steps)
 18. [Conclusion](#18-conclusion)
+19. [Appendix: Tips for Reproducing This Project](#19-appendix-tips-for-reproducing this project)
 <br/><br/>
 
 ## 1. Business Proposal
@@ -37,6 +38,8 @@ Did you know your power usage on just 5 days of the year determines over 50% of 
 ### 1.2 Example
 Consider a factory with an average stable monthly electrical demand of 6.3MW. The annual electricity costs will be about C$6,000,000. About 40% - 50% of this cost is directly related to consumed energy – i.e. Total KW hours consumed x $ per KW Hour.
 However, the other **50% - 60% of total cost is based on how much electricity the factory used on just 5 days over the past year** – These are the [5 days](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=2ahUKEwjPxrXaq5blAhXBY98KHRxKASYQFjAAegQIAhAC&url=http%3A%2F%2Fwww.ieso.ca%2F-%2Fmedia%2Ffiles%2Fieso%2Fdocument-library%2Fglobal-adjustment%2Funderstanding-global-adjustment.pdf&usg=AOvVaw0KsqKv4fJzPn5bEunXex5g) when electricity demand across the whole of Ontario was highest. This is the largest line item on your electricity bill, and is called [Global Adjustment (GA)](http://www.ieso.ca/en/Learn/Electricity-Pricing/What-is-Global-Adjustment)
+
+
 
 ### 1.3 Proposal
 Between late May and early October you will receive 5 notifications of a predicted peak load day `n` days in advance.
@@ -58,7 +61,7 @@ Note:
 
 
 ## 2. Project Objectives
-The original intent of the project was to predict year-round hourly electricity demand. Having investigated the cost structure of large user’s bills, the project was re-scoped. The revised intent is to develop a prediction model that will predict electrical peak demand days in Ontario over summer. The model has to be good enough to make the business model viable. Therefore, the model should:
+The original intent of the project was to predict year-round hourly electricity demand. Having investigated [the cost structure of large user’s bills](https://globalnews.ca/news/2839995/what-is-the-global-adjustment-fee-the-mysterious-cost-ontario-hydro-customers-must-pay/), the project was re-scoped. The revised intent is to develop a prediction model that will predict electrical peak demand days in Ontario over summer. The model has to be good enough to make the business model viable. Therefore, the model should:
 
 + Predict with the highest possible level of accuracy
 + Perform better than just choosing the highest temperature days
@@ -205,12 +208,29 @@ The heat map combines the weekly, and hourly demand data to present a clear pict
 The customer will only reduce their electricity costs if the model successful predicts the peak demand days. The business service will nominate 5 days as possible peaks. Therefore, the most natural metric is a hit rate i.e. what % of peaks are accurately predicted. I will call this metric “bounded precision”.
 
 Bounded Precision = Number of peaks correctly predicted / 5 predictions
+
 So, if we accurately predict only 1 peak out of our 5 attempts:
+
 Bounded Precision = 1/5 = 0.2 = 20%
+
+#### Worked Example
+
+| Top 5 Actual Peaks  | Demand MW (sorted desc.)&nbsp;&nbsp; | Top 5 Predicted Peaks&nbsp;&nbsp;  | Predicted Demand (MW)
+|:------------- |:-------------|-----|---------|
+| *17-Jun-94&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 20918 | 9-Jul-94 | 21674 |
+| *16-Jun-94 | 20468 | **17-Jun-94** | 21506 |
+| 08-Jul-94 | 20239 | 20-Jun-94 | 21140 |
+| *06-Jul-94 | 20196 | **06-Jul-94** | 21095 |
+| 21-Jun-94 | 19953 | **16-Jun-94** | 20906 |
+
+Reviewing the table above, we sort the actual demand from the highest demand day to the lowest demand day. We do the same for predicted demand. We only get to make predictions on 5 days, so we can cut the table off after the fifth value. Now we can count how many of the predicted dates are in the actual dates. These are shown in bold in the table above.
+
+In this case we correctly predicted 3 out of the 5 peak dates, so our bounded precision was 60% 
 
 
  
-This is a good metric for the final model, but it is a bit too crude to use when developing models. 
+This metric is crucial. It is the metric that determines whether the business proposal is viable. But, it is a bit too crude to use when developing models.
+
 Therefore, I will also use a more sophisticated metric to compare model performance – mean absolute error.
 
 ### 6.2 Mean Absolute Error
@@ -640,8 +660,7 @@ This measure is better at discriminating between model performances. It is notic
 The structure of the best performing model – Averaging Model - is shown below
 
  <p>
-    <img src="notebooks/images/averaging-model.PNG" width="658" height="671" />
-</p>
+    <img src="notebooks/images/best-model.PNG" width="672" height="658" /></p>
 
 #### Notebooks
 + [Analysis of Results](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/08.01%20Analysis%20of%20Results.ipynb)
@@ -712,11 +731,15 @@ This knowledge can help inform how much we will compensate the customer for inco
 
 ### 17.1 Future Directions
 
++ This is a toy model developed to support a mock business proposal. Actual weather data was used - in a real model only forecast weather data would be available. No doubt, weather forecasting is improving, but this introduces a large gap between my model and a real model.
++ This project develops a single model. A better approach may be to develop a model based on a temporal split - For example develop Monday, Tuesday, Wednesday, etc. models, and recombine the predictions.
 + Feature Selection could be improved by applying statistical tests to features. This could substantially improve the model.
 + I am not convinced that Auto ARIMA helped as much as I first expected. A grid search for the ARIMA parameters across multiple time periods may have given a better model
 +  Is there a better rolling window span for the cross validation? Probably, and with more searching it could be found.
 + Model Tuning - A small amount of tuning was done, but not exhaustively. This is certainly a good opportunity to improve model performance.
 + Feature Engineering - Because the scope changed during the project, analysis of features was a bit lacking on the reduced data set
++ All the above are relatively minor tweaks to the original project. These would be interesting, but from what I can tell, the [Monash Electricity Forecasting Model](https://robjhyndman.com/papers/MEFMR1.pdf) is the state of the (publicly available) art. (presentation [here](https://www.slideshare.net/hyndman/challenges-in-forecasting-peak-electricity-demand)) If I were to develop a follow on model - I would try to reproduce this for the Ontario market. 
+<br/><br/>
 
 ## 18 Conclusion
 
@@ -726,14 +749,58 @@ Is a summer peak prediction service for heavy power users in Ontario a viable bu
 
 My answer is - Possibly.
 
-It seems like the financials could be viable. If the offer can be distributed, and customers can be signed up, then I think it could work.
+It seems like the financials could be viable. A more appropriate model would be required. But, if the offer can be distributed, and customers can be signed up, then I think it could work.
+
+<br/><br/>
+
+## 19 Appendix: Tips for Reproducing This Project
 
 
+### 19.1 Software
+
+The [full environment file](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/environment.yml) is available in the top level of the repository.
 
 
+Highlights
 
 
+Package                 |	Version     | Usage
+:------------------------|:--------------:|:------------
+Python                   |	3.7.3    | Code
+Jupyter Notebook Client  |	5.3.1 | Code Organization
+Matplotlib	| 3.1.1  | Visualization
+Seaborn	| 0.9.0  | Visualization
+Pandas	| 0.25.1  | Data Manipulation
+Scikit Learn	| 0.20.0  | Machine Learning
+XGBoost	| 0.90  | Machine Learning
+Statsmodels	| 0.10.1  | Analysis including ARIMA Models
+FbProphet	| 0.5  | Bayesian Time Series Modelling
+Pymc3	| 3.7  | Bayesian Modelling
+Pdarima	| 1.2.0  | Automatic Parameter Finding for ARIMA Models
+Skoot	| 0.20.0  | Machine Learning Transformations on Pandas DataFrames
+Skyfield	| 1.11  | Solstice Calculations
+Holidays    | 0.9.11   | Statutory Vacation Days
 
+
+### 19.2 Data
+
++ Electricity Demand
+	* Data used in this project - Ontario Hourly Electrical Demand 1994 to 2019 [Data Directory](https://github.com/DMacGillivray/ontario-peak-power-forecasting/tree/master/data/01-raw/demand)
++ Electricity Demand Data Sources & Resources
+	+ [Independent Electricity System Operator (IESO) Web Page  - Data Directory](http://www.ieso.ca/Power-Data/Data-Directory)
+	+ [Download - Ontario Electricity Demand 1994 - 2002](http://www.ieso.ca/-/media/Files/IESO/Power-Data/data-directory/HourlyDemands_1994-2002.csv?la=en)
+	+ [Download - Ontario Electricity Demand 2002 to present](http://reports.ieso.ca/public/Demand/)
+
++ Weather
+	* Data used in this project - Toronto (YYZ) Hourly Weather 1953 to 2019 - [Data Directory](https://github.com/DMacGillivray/ontario-peak-power-forecasting/tree/master/data/01-raw/weather-toronto)
++ Weather Data Sources & Resources
+	* [Historical Weather Data Search Page](https://climate.weather.gc.ca/historical_data/search_historic_data_e.html)
+	* [How to use - Historical Data pdf](https://climate.weather.gc.ca/doc/Historical_Data_How_to_Use.pdf)
+	* [How to bulk download historical weather data from Canadian government website using R](https://stackoverflow.com/questions/53824071/how-to-bulk-download-historical-weather-data-from-canadian-government-website-us/53939602#53939602)
+	* [Download Scripts for Canadian Weather Bulk Download](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/src/raw-data/wget-bulk-weather.txt)
+
+
+<br/><br/>
 
 
 						David MacGillivray – Springboard Capstone Project 1 – 9 October 2019
